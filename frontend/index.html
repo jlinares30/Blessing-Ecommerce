@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blessing E-commerce</title>
+    <!-- Incluye Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header -->
+    <header class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-3xl font-bold">Blessing</h1>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="#home" class="hover:text-gray-300">Inicio</a></li>
+                    <li><a href="#products" class="hover:text-gray-300">Productos</a></li>
+                    <li><a href="#contact" class="hover:text-gray-300">Contacto</a></li>
+                    <li><a href="#cart" class="hover:text-gray-300">Carrito (<span id="cart-count">0</span>)</a></li>
+                    <li><a href="#cart" class="hover:text-gray-300">Log in</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-blue-200 py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-semibold mb-4">Bienvenido a Blessing</h2>
+            <p class="text-xl mb-8">Encuentra productos exclusivos para tu estilo de vida.</p>
+            <a href="#products" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Ver Productos</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-semibold mb-8">Nuestros Productos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Producto 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <img src="../frontend/imagenes/body1.jpg" alt="Producto 1" class="w-full h-48 object-cover mb-4 rounded-t-lg">
+                    <h3 class="text-xl font-semibold mb-2">Producto 1</h3>
+                    <p class="text-gray-600 mb-4">Descripción breve del producto.</p>
+                    <p class="text-lg font-semibold mb-4">$20.00</p>
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" onclick="addToCart('Producto 1', 20)">Agregar al Carrito</button>
+                </div>
+                <!-- Producto 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <img src="https://via.placeholder.com/300" alt="Producto 2" class="w-full h-48 object-cover mb-4 rounded-t-lg">
+                    <h3 class="text-xl font-semibold mb-2">Producto 2</h3>
+                    <p class="text-gray-600 mb-4">Descripción breve del producto.</p>
+                    <p class="text-lg font-semibold mb-4">$35.00</p>
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" onclick="addToCart('Producto 2', 35)">Agregar al Carrito</button>
+                </div>
+                <!-- Producto 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <img src="https://via.placeholder.com/300" alt="Producto 3" class="w-full h-48 object-cover mb-4 rounded-t-lg">
+                    <h3 class="text-xl font-semibold mb-2">Producto 3</h3>
+                    <p class="text-gray-600 mb-4">Descripción breve del producto.</p>
+                    <p class="text-lg font-semibold mb-4">$50.00</p>
+                    <button class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" onclick="addToCart('Producto 3', 50)">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gray-200 py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-semibold mb-8">Contáctanos</h2>
+            <form action="contact.php" method="POST" class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <div class="mb-4">
+                    <label for="name" class="block text-left mb-2">Nombre:</label>
+                    <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-left mb-2">Email:</label>
+                    <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div class="mb-4">
+                    <label for="message" class="block text-left mb-2">Mensaje:</label>
+                    <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg" required></textarea>
+                </div>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Enviar</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section id="cart" class="py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-semibold mb-8">Tu Carrito</h2>
+            <div id="cart-items" class="text-left mx-auto bg-white p-6 rounded-lg shadow-lg max-w-lg">
+                <p class="text-gray-600">No tienes productos en tu carrito.</p>
+            </div>
+            <a href="#" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mt-4 inline-block">Finalizar Compra</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 Blessing. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+
