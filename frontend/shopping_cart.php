@@ -134,7 +134,7 @@ if (isset($_SESSION['user_id'])) {
                     </div> -->
                     <form id="deleteReservationsForm" action="delete.php" method="POST">
                         <input type="hidden" name="reservations_to_delete" id="reservationsToDeleteInput">
-                        <button type="button" class="font-medium text-green-600 hover:text-green-500" onclick="confirmDeletions()">Confirmar</button>
+                        <button type="button" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700" onclick="confirmDeletions()">Confirmar</button>
                     </form>
 
                     <div class="mt-6 flex justify-center text-center text-sm text-gray-500">

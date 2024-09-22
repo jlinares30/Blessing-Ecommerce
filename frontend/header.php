@@ -13,29 +13,32 @@
     <title>Blessing E-commerce</title>
     <!-- Incluye Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/styles.css">
 
 </head>
-<body class="bg-gray-100">
+<body class="bg-rose-300" style="font-family: Roboto, sans-serif;">
 
     <!-- Header -->
-    <header class="bg-blue-600 text-white py-4">
+    <header class="bg-purple-800 text-white py-4">
         <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold">Blessing</h1>
+            <h1 id="logo" style="font-family: Great Vibes, cursive;" class="text-6xl font-bold">Blessing</h1>
             <nav>
-                <ul class="flex space-x-4">
-                    <li><a href="./index.php" class="hover:text-gray-300">Inicio</a></li>
-                    <li><a href="#products" class="hover:text-gray-300">Productos</a></li>
-                    <li><a href="#contact" class="hover:text-gray-300">Contacto</a></li>
-                    <li><a id="open-cart" href="#" class="hover:text-gray-300">Carrito (<span id="cart-count">0</span>)</a></li>
+                <ul class="flex space-x-5 text-2xl">
+                    <li><a href="./index.php" class="hover:text-rose-400">Inicio</a></li>
+                    <li><a href="./update_reservation.php" class="hover:text-rose-400">Reservas</a></li>
+                    <li><a href="#contact" class="hover:text-rose-400">Contacto</a></li>
+                    <li><a id="open-cart" href="#" class="hover:text-rose-400">Carrito (<span id="cart-count">0</span>)</a></li>
                     <li>
                     <?php
                         if (isset($_SESSION['user_id'])) {
                             // Usuario está logueado
-                            echo '<a type="button" class="hover:text-gray-300" href="logout.php">Log Out</a>'; // Enlaza a la página que maneja el cierre de sesión
+                            echo '<a type="button" class="hover:text-rose-400" href="logout.php">Log Out</a>'; 
                         } else {
                             // Usuario no está logueado
-                            echo '<a type="button" class="hover:text-gray-300" href="login.php">Log In</a>'; // Enlaza a la página de inicio de sesión
+                            echo '<a type="button" class="hover:text-rose-400" href="login.php">Log In</a>'; 
                         }
                         ?>
                         <!-- <a href="./login.php" type="button" class="hover:text-gray-300">Log in</a> -->

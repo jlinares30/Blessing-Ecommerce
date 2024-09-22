@@ -11,16 +11,16 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- Hero Section -->
     <section id="home" class="bg-blue-200 py-16">
         <div class="container mx-auto text-center">
-            <h2 class="text-4xl font-semibold mb-4">Bienvenido a Blessing</h2>
-            <p class="text-xl mb-8">Encuentra productos exclusivos para tu estilo de vida.</p>
-            <a href="#products" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Ver Productos</a>
+            <h2 class="text-5xl font-semibold mb-4">Welcome to <span class="text-7xl" style="font-family: Great Vibes, cursive;">Blessing</span> </h2>
+            <p class="text-xl mb-8">Find exclusive services for your lifestyle.</p>
+            <a href="#products" class="bg-violet-400 text-white py-2 px-4 rounded hover:bg-purple-800">Explore</a>
         </div>
     </section>
 
     <!-- Products -->
-    <div class="bg-white">
+    <div class="bg-violet-400">
     <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 class="sr-only">Products</h2>
+        <h2 class="sr-only">Services</h2>
 
         <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         <?php
@@ -31,7 +31,7 @@ if (session_status() === PHP_SESSION_NONE) {
             ?>
             <a href="service.php?id=<?php echo $row['id']; ?>" class="group">
                 <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                <img src="https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="h-full w-full object-cover object-center group-hover:opacity-75">
+                <img src="./imagenes/<?php echo $row['id']; ?>.jpg" alt="Tall slender porcelain bottle with natural clay textured body and cork stopper." class="h-full w-full object-cover object-center group-hover:opacity-75">
                 </div>
                 <h3 class="mt-4 text-sm text-gray-700"> <?php echo $row['detail_service'] ?></h3>
                 <p class="mt-1 text-lg font-medium text-gray-900"><?php echo $row['price_service'] ?></p>

@@ -104,12 +104,31 @@ if (isset($_GET['id'])) {
       <!-- Options -->
       <div class="mt-4 lg:row-span-3 lg:mt-0">
         
-        <p class="text-3xl tracking-tight text-gray-900"><?php echo $service['price_service'];?></p>
-        <p class="text-sm text-gray-500 mb-4"> 
-          <span class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-          category
-          </span>
-      </p>
+        <p class="text-3xl tracking-tight text-gray-900"><?php echo "$ " . $service['price_service'];?></p>
+            <?php
+              $name_category = "SELECT c.name_category 
+                            FROM categories c
+                            JOIN service_categories sc ON c.id = sc.categories_id
+                            JOIN service s ON s.id = sc.service_id
+                            WHERE s.id = $service_id";
+                $result = $conn->query($name_category);
+
+                if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                ?>
+                <p class="text-sm text-gray-500 mb-4">
+                  Category:  
+                    <span class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                        <?php echo $row['name_category']; ?>
+                    </span>
+                </p>
+                <?php
+                }
+                } else {
+                echo "No categories found for this service.";
+                }
+                ?>
+        
 
         <!-- Reviews -->
         <!-- <div class="mt-6">
@@ -157,18 +176,18 @@ if (isset($_GET['id'])) {
                     $query = "SELECT name_salon ,address_salon FROM salon";
                     $result = $conn->query($query);
                     while ($row = $result->fetch_assoc()) {
-                    ?>
+                     ?>
                     <option ><?php echo $row['name_salon'] . " | " . $row['address_salon'];?></option>
-                    <?php
+                     <?php
                     }
                     ?>
                     <?php
-                    $date = $_POST['date'];
-                    $time = $_POST['time'];
+                    // $date = $_POST['date'];
+                    // $time = $_POST['time'];
 
-                    if ($date && $time) {
-                        $dateTime = $date . ' ' . $time;
-                    }
+                    // if ($date && $time) {
+                    //     $dateTime = $date . ' ' . $time;
+                    // }
                     ?>
                 </select>
             </fieldset>
@@ -193,8 +212,8 @@ if (isset($_GET['id'])) {
             } else {
                 die("Error al insertar en reservations: " . mysqli_error($conn));
             }
-    exit;
-        }
+            exit;
+                }
                     ?>
                 <button type="submit" name="create_reservation" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Reservar ahora</button>
         </form>
@@ -204,10 +223,26 @@ if (isset($_GET['id'])) {
         <!-- Description and details -->
         <div>
           <h3 class="sr-only">Description</h3>
+          <?php
+              $name_category = "SELECT c.name_category, c.description_category 
+                                FROM categories c
+                                JOIN service_categories sc ON c.id = sc.categories_id
+                                JOIN service s ON s.id = sc.service_id
+                                WHERE s.id = $service_id";
+              $result = $conn->query($name_category);
 
-          <div class="space-y-6">
-            <p class="text-base text-gray-900">The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: &quot;Black&quot;. Need to add an extra pop of color to your outfit? Our white tee has you covered.</p>
-          </div>
+              if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                    ?>
+                      <div class="space-y-6">
+                        <p class="text-base text-gray-900"><?php echo $row['description_category']; ?></p>
+                      </div>
+                    <?php
+                  }
+                }
+                  ?>
+          
+
         </div>
 
 
