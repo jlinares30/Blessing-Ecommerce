@@ -1,7 +1,7 @@
 <?php if (session_status() === PHP_SESSION_NONE) {
     session_start();
     $user_id = $_SESSION['user_id'];
-    echo $user_id;
+    // echo $user_id;
 }
 
 ?>
@@ -11,7 +11,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blessing E-commerce</title>
-    <!-- Incluye Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,23 +20,45 @@
 </head>
 <body class="bg-rose-300" style="font-family: Roboto, sans-serif;">
 
-    <!-- Header -->
     <header class="bg-purple-800 text-white py-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 id="logo" style="font-family: Great Vibes, cursive;" class="text-6xl font-bold">Blessing</h1>
             <nav>
                 <ul class="flex space-x-5 text-2xl">
-                    <li><a href="./index.php" class="hover:text-rose-400">Inicio</a></li>
-                    <li><a href="./update_reservation.php" class="hover:text-rose-400">Reservas</a></li>
+                    <li><a href="./index.php" class="hover:text-rose-400">Home</a></li>
+                    <li>
+                    <?php if (session_status() === PHP_SESSION_NONE){?>
+                        <a href="login.php" class="hover:text-rose-400">Reservations</a>
+                        <?php 
+                        }
+                        else{ ?>
+                            <!-- echo "service.php?id=" . $row['id']; -->
+                            <a href="./reservations_list.php" class="hover:text-rose-400">Reservations</a>
+                        <?php
+                        }?>
+                    </li>
                     <li><a href="#contact" class="hover:text-rose-400">Contacto</a></li>
-                    <li><a id="open-cart" href="#" class="hover:text-rose-400">Carrito (<span id="cart-count">0</span>)</a></li>
+                    <?php
+                    // if (session_status() == PHP_SESSION_NONE) {
+                    //     $user_id = $_SESSION['user_id'];
+                    //     $servicesArray = array();
+                    //     $query = "SELECT id FROM reservations WHERE user_id = $user_id";
+                    //     $result = $conn->query($query);
+                    //     while ($row = $result->fetch_assoc()){
+                    //         $servicesArray[] = $row['id'];
+                    //     }
+                    //     $total =  count($servicesArray);
+                    //     }
+                    ?>
+                    <li><a id="open-cart" href="#" class="hover:text-rose-400">Carrito (<span id="cart-count"><?php
+                    
+                    //  if (session_status() == PHP_SESSION_NONE) {echo 0;}else{  echo $total;}  
+                     ?></span>)</a></li>
                     <li>
                     <?php
                         if (isset($_SESSION['user_id'])) {
-                            // Usuario está logueado
                             echo '<a type="button" class="hover:text-rose-400" href="logout.php">Log Out</a>'; 
                         } else {
-                            // Usuario no está logueado
                             echo '<a type="button" class="hover:text-rose-400" href="login.php">Log In</a>'; 
                         }
                         ?>

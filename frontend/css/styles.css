@@ -8,3 +8,27 @@
 body{
     font-family: "Roboto", sans-serif;
 }
+#home{
+    height: 800px;
+    padding-top: 325px;
+    background-image: url(../imagenes/bg-hero.jpg);
+    background-position: center;
+    background-size: cover;
+    font-size: x-small;
+    color: rgb(53, 5, 65);
+}
+#conteniner-img-service{
+    width: 100%;
+    height: auto; 
+    overflow: hidden;
+}
+#img-service{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+#section-presentation, #section-testimonial{
+    height: 500px;
+
+}

@@ -5,39 +5,19 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
-    echo $user_id; 
+    // echo $user_id; 
 }
 ?>
 <?php include("../backend/contact.php")?>
 <?php include("./remove_reservation.php")?>
 
-    <!-- Carrito -->
+    <!-- SHOPPING CART-->
     <div  class="relative z-50 pointer-events-none" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
-        <!--
-          Background backdrop, show/hide based on slide-over state.
-      
-          Entering: "ease-in-out duration-500"
-            From: "opacity-0"
-            To: "opacity-100"
-          Leaving: "ease-in-out duration-500"
-            From: "opacity-100"
-            To: "opacity-0"
-        -->
-        <div id="background-backdrop" class="ease-in-out duration-500 fixed inset-0 transition-opacity" aria-hidden="true"></div>
+        <div id="background-backdrop" class="pointer-events-none ease-in-out duration-500 fixed inset-0 transition-opacity" aria-hidden="true"></div>
         <!-- bg-gray-500 bg-opacity-75 -->
-        <div  class="fixed inset-0 overflow-hidden">
+        <div id="oculto"  class="fixed inset-0 overflow-hidden">
           <div  class="absolute inset-0 overflow-hidden">
-            <div id="shopping-cart" class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 translate-x-full">
-              <!--
-                Slide-over panel, show/hide based on slide-over state.
-      
-                Entering: "transform transition ease-in-out duration-500 sm:duration-700"
-                  From: "translate-x-full"
-                  To: "translate-x-0"
-                Leaving: "transform transition ease-in-out duration-500 sm:duration-700"
-                  From: "translate-x-0"
-                  To: "translate-x-full"
-              -->
+            <div id="shopping-cart" class=" duration-700 pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 translate-x-full">
               <div  class="pointer-events-auto w-screen max-w-md">
                 <div class="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                   <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
@@ -59,12 +39,15 @@ if (isset($_SESSION['user_id'])) {
                         <ul role="list" class="-my-6 divide-y divide-gray-200">
 
                         <?php
+                            $prices = array();
                             $sql = "SELECT
-                                        re.id AS reservation_id, 
+                                        re.id AS reservation_id,
+                                        s.id AS service_id,  
                                         s.detail_service AS service_name, 
                                         s.price_service AS price, 
                                         sp.name_specialist AS specialist_name, 
-                                        sa.name_salon AS salon_name, 
+                                        sa.name_salon AS salon_name,
+                                        sa.address_salon AS salon_address, 
                                         re.date_reservation AS date
                                         FROM 
                                             shopping_list sl
@@ -78,16 +61,17 @@ if (isset($_SESSION['user_id'])) {
                                             salon sa ON sp.salon_id = sa.id
                                         WHERE 
                                             re.user_id = ?"; 
-                                // Ejecutar la consulta
+                                
                                 $stmt = $conn->prepare($sql);
                                 $stmt->bind_param("i", $user_id);
                                 $stmt->execute();
                                 $result = $stmt->get_result();
                             while ($row = $result->fetch_assoc()) {
+                              $prices[] = $row["price"];
                             ?>
-                              <li class="flex py-6" id="item-<?php echo $row['reservation_id']; ?>">
+                              <li class="flex py-6 px-3.5" id="item-<?php echo $row['reservation_id']; ?>">
                                 <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                    <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="h-full w-full object-cover object-center">
+                                    <img src="./imagenes/<?php echo $row['service_id']; ?>.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." class="h-full w-full object-cover object-center">
                                 </div>
       
                                 <div class="ml-4 flex flex-1 flex-col">
@@ -96,10 +80,11 @@ if (isset($_SESSION['user_id'])) {
                                         <h3>
                                         <a href="#"><?php echo $row["service_name"]?> </a>
                                         </h3>
-                                        <p class="ml-4"><?php echo $row["price"]?></p>
+                                        <p class="ml-4"><?php echo "$" . $row["price"]?></p>
                                     </div>
                                         <p class="mt-1 text-sm text-gray-500"><?php echo $row["specialist_name"]?></p>
                                         <p class="mt-1 text-sm text-gray-500"><?php echo $row["salon_name"]?></p>
+                                        <p class="mt-1 text-sm text-gray-500"><?php echo $row["salon_address"]?></p>
                                     </div>
                                 <div class="flex flex-1 items-end justify-between text-sm">
                                     <p class="text-gray-500"><?php echo $row["date"]?></p>
@@ -109,7 +94,7 @@ if (isset($_SESSION['user_id'])) {
                                     <!-- <form action="shopping_cart.php" method="POST"> -->
                                     <!-- <input type="hidden" name="reservation_id" value="<?php //echo $row['reservation_id']; ?>"> -->
                                     <!-- <button type="submit" id="delete" name="delete_reservation" class="font-medium text-red-600 hover:text-red-500" >Remove</button> -->
-                                    <button type="button" class="font-medium text-red-600 hover:text-red-500" onclick="addToDeleteArray(<?php echo $row['reservation_id']; ?>, '<?php echo $row['reservation_id']; ?>')">Remove</button>
+                                    <button type="button" class="font-medium text-red-600 hover:text-red-500" onclick="addToDeleteArray(<?php echo $row['reservation_id']; ?>)">Remove</button>
                                     <!-- </form> -->
                                 </div>
                                 </div>
@@ -125,8 +110,11 @@ if (isset($_SESSION['user_id'])) {
       
                   <div class="border-t border-gray-200 px-4 py-6 sm:px-6">
                     <div class="flex justify-between text-base font-medium text-gray-900">
-                      <p>Subtotal</p>
-                      <p>$262.00</p>
+                      <p>Total</p>
+                      <?php
+                        $total = array_sum($prices);
+                       ?>
+                      <p><span id="price_sum"><?php echo "$ " . $total; ?></span></p>
                     </div>
                     <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                     <!-- <div class="mt-6">

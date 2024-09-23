@@ -1,23 +1,21 @@
 <?php include("../backend/contact.php")?>
 <?php
-session_start(); // Iniciar sesión
+session_start();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Buscar el usuario en la base de datos
     $sql = "SELECT * FROM user WHERE email_user = '$email'";
     $result = $conn->query($sql);
 
     if ($result->num_rows == 1) {
         $user = $result->fetch_assoc();
         
-        // Verificar la contraseña
         // if (password_verify($password, $user['password']))
         if ($password == $user['password']) {
-            // Iniciar sesión, guardar el ID del usuario en la sesión
+            // iniciar sesion y guardar el ID del usuario en la sesion
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['first_name_user'];
             echo "Inicio de sesión exitoso. Bienvenido, " . $_SESSION['user_name'];

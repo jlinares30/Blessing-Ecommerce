@@ -9,6 +9,6 @@ $conn = mysqli_connect(
 # Validar Conexiopn a BD
 
 if (isset($conn)) {
-    echo "DB is connected";
+    // echo "DB is connected";
 }
 ?>

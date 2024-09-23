@@ -3,84 +3,24 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 $user_id = $_SESSION['user_id'];
-echo $user_id;
+// echo $user_id;
 ?>
 <?php include("../backend/contact.php")?>
 <?php include("./header.php")?>
 <?php include("./shopping_cart.php")?>
+<?php include("./reservation.php")?>
 
 
 
-
-<?php
-if (isset($_GET['id'])) {
-    $service_id = intval($_GET['id']); // Asegurarse de que es un entero
-    echo $service_id;
-
-
-    // Obtener los detalles del servicio desde la base de datos
-    $stmt = $conn->prepare("SELECT * FROM service WHERE id = ?");
-    $stmt->bind_param("i", $service_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        // Mostrar los detalles del servicio
-        $service = $result->fetch_assoc();
-    } else {
-        echo "Service not found!";
-        exit();
-    }
-} else {
-    echo "Invalid service!";
-    exit();
-}
-
-
-// $sql = "SELECT 
-//             s.detail_servi AS service_name, 
-//             sp.name_speciali AS specialist_name, 
-//             sa.name_salon AS salon_name, 
-//             c.name_category AS category_name
-//         FROM 
-//             service s
-//         INNER JOIN 
-//             specialist sp ON s.specialist_id = sp.id
-//         INNER JOIN 
-//             salon sa ON sp.salon_id = sa.id
-//         INNER JOIN 
-//             service_categories sc ON s.id = sc.service_id
-//         INNER JOIN 
-//             categories c ON sc.categories_id = c.id";
-
-// // Ejecutar la consulta
-// $result2 = $conn->query($sql);
-
-// // Verificar si hay resultados
-// if ($result2->num_rows > 0) {
-//     // Procesar los resultados
-//     while($row = $result2->fetch_assoc()) {
-//         echo "<h3>Servicio: " . $row["service_name"] . "</h3>";
-//         echo "<p>Especialista: " . $row["specialist_name"] . "</p>";
-//         echo "<p>Salón: " . $row["salon_name"] . "</p>";
-//         echo "<p>Categoría: " . $row["category_name"] . "</p>";
-//     }
-// } else {
-//     echo "No se encontraron resultados.";
-// }
-
-// // Cerrar la conexión
-// $conn->close();
-?>
 
 
 <div class="bg-white">
   <div class="pt-6">
 
-    <!-- Image gallery -->
+    <!-- gallery -->
     <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
       <div class="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
-        <img src="imagenes/body2.jpg" alt="Two each of gray, white, and black shirts laying flat." class="h-full w-full object-cover object-center">
+        <img src="./imagenes/<?php echo $service_id ?>.jpg" alt="Two each of gray, white, and black shirts laying flat." class="h-full w-full object-cover object-center">
       </div>
       <!-- <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
         <div class="aspect-h-2 aspect-w-3 overflow-hidden rounded-lg">
@@ -91,17 +31,17 @@ if (isset($_GET['id'])) {
         </div>
       </div> -->
       <div class="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
-        <img src="imagenes/body1.jpg" alt="Model wearing plain white basic tee." class="h-full w-full object-cover object-center">
+        <img src="imagenes/<?php echo $service_id . "-1" ?>.jpg" alt="Model wearing plain white basic tee." class="h-full w-full object-cover object-center">
       </div>
     </div>
 
-    <!-- Product info -->
+    <!-- product info -->
     <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
       <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl"><?php echo $service['detail_service']; ?></h1>
       </div>
 
-      <!-- Options -->
+      <!-- options -->
       <div class="mt-4 lg:row-span-3 lg:mt-0">
         
         <p class="text-3xl tracking-tight text-gray-900"><?php echo "$ " . $service['price_service'];?></p>
@@ -155,7 +95,8 @@ if (isset($_GET['id'])) {
           </div>
         </div> -->
 
-        <form action="service.php?id=<?php echo $service['id']; ?>" method="post" class="mt-10">
+        <form action="reservation.php?id=<?php echo $service['id']; ?>" method="post" class="mt-10">
+        <!-- action="service.php?id=<?php //echo $service['id']; ?>" -->
           <!-- Datos -->
           
           <div class="mt-10">
@@ -163,23 +104,23 @@ if (isset($_GET['id'])) {
             <fieldset aria-label="Choose a size" class="mt-4">
               <!-- //DAY -->
                 <label for="date" class="block text-lg font-medium text-gray-700 mb-2">Seleccionar día y hora</label>
-                <input placeholder="example: 2024-10-05 11:45:00" type="datetime" id="date" class="block w-full p-2 border border-gray-300 rounded-md mb-4" />
+                <input type="datetime-local" id="date" name="selected_date" class="block w-full p-2 border border-gray-300 rounded-md mb-4" />
 
                 <!-- <label for="time" class="block text-lg font-medium text-gray-700 mb-2">Seleccionar hora</label>
                 <input placeholder="example: 11:45:00" type="datetime" id="time" class="block w-full p-2 border border-gray-300 rounded-md mb-4" /> -->
 
                 <!-- //SALON -->
-                <label for="salon" class="block text-lg font-medium text-gray-700 mb-2">Seleccionar salón</label>
-                <select id="salon" class="block w-full p-2 border border-gray-300 rounded-md mb-4">
+                <!-- <label for="salon" class="block text-lg font-medium text-gray-700 mb-2">Seleccionar salón</label>
+                <select id="salon" class="block w-full p-2 border border-gray-300 rounded-md mb-4"> -->
                     <?php
                     
-                    $query = "SELECT name_salon ,address_salon FROM salon";
-                    $result = $conn->query($query);
-                    while ($row = $result->fetch_assoc()) {
+                    // $query = "SELECT name_salon ,address_salon FROM salon";
+                    // $result = $conn->query($query);
+                    // while ($row = $result->fetch_assoc()) {
                      ?>
-                    <option ><?php echo $row['name_salon'] . " | " . $row['address_salon'];?></option>
+                    <!-- <option ><?php //echo $row['name_salon'] . " | " . $row['address_salon'];?></option> -->
                      <?php
-                    }
+                    // }
                     ?>
                     <?php
                     // $date = $_POST['date'];
@@ -192,30 +133,9 @@ if (isset($_GET['id'])) {
                 </select>
             </fieldset>
           </div>
-          <?php
-          // INSERTANDO A LA BASE DE DATOS
-          if (isset($_POST["create_reservation"])){
-            $query2 = "INSERT INTO reservations (date_reservation, user_id) VALUES ('2024-10-05 11:45:00', '$user_id')";
-            $result2 = mysqli_query($conn, $query2);
-            if ($result2) {
-                $reservations_id = $conn->insert_id;
-
-                $query3 = "INSERT INTO shopping_list (reservations_id, service_id) VALUES ('$reservations_id', '$service_id')";
-                $result3 = mysqli_query($conn, $query3);
-
-                if ($result3) {
-                    $_SESSION["message"] = "Reservación creada exitosamente!";
-                    $_SESSION["message_type"] = "success";
-                } else {
-                    die("Error al insertar en shopping_list: " . mysqli_error($conn));
-                }
-            } else {
-                die("Error al insertar en reservations: " . mysqli_error($conn));
-            }
-            exit;
-                }
-                    ?>
-                <button type="submit" name="create_reservation" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Reservar ahora</button>
+                <div id="reservarBtn">
+                <button  type="submit" name="create_reservation" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Reservar ahora</button>
+                </div>
         </form>
       </div>
 
@@ -247,13 +167,20 @@ if (isset($_GET['id'])) {
 
 
 
-        <div class="mt-10">
+        <!-- <div class="mt-10">
           <h2 class="text-sm font-medium text-gray-900">Details</h2>
 
           <div class="mt-4 space-y-6">
             <p class="text-sm text-gray-600">The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming &quot;Charcoal Gray&quot; limited release.</p>
           </div>
+        </div> -->
+        <div id="successAlert" class="hidden bg-green-50 border border-green-400 text-green-800 px-4 py-3 rounded relative" role="alert">
+          <span class="block sm:inline">Successfully reserved</span>
+          <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+            <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" onclick="closeAlert()"><path d="M14.348 5.652a.5.5 0 00-.707 0L10 9.293 6.36 5.653a.5.5 0 10-.707.707L9.293 10l-3.64 3.64a.5.5 0 00.707.707L10 10.707l3.64 3.64a.5.5 0 00.707-.707L10.707 10l3.641-3.641a.5.5 0 000-.707z"/></svg>
+          </span>
         </div>
+
       </div>
     </div>
   </div>
